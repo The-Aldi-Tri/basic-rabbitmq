@@ -1,0 +1,27 @@
+version: "3.8"
+
+name: basic-rabbitmq
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm
+    volumes:
+      - ../..:/workspaces:cached
+    network_mode: service:mq
+    command: sleep infinity
+
+  mq:
+    image: rabbitmq:3.12-management
+    restart: unless-stopped
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    # env_file: ../.env
+    # environment:
+    #   POSTGRES_USER: developer
+    #   POSTGRES_PASSWORD: supersecretpassword
+    #   POSTGRES_DB: openmusic
+
+volumes:
+  rabbitmq-data:
